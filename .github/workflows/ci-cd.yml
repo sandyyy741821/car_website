@@ -21,13 +21,14 @@ jobs:
             -Dsonar.projectKey=car_website \
             -Dsonar.sources=. \
             -Dsonar.host.url=$SONAR_HOST_URL \
-            -Dsonar.login=$SONAR_TOKEN
+            -Dsonar.login=$SONAR_TOKEN \
+            -Dsonar.branch.name=main  # Explicitly define the branch
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
   deploy:
-    needs: build
+    needs: sonar_scan
     runs-on: ubuntu-latest
 
     steps:
