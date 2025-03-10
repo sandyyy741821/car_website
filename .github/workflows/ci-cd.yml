@@ -13,9 +13,9 @@ jobs:
           sudo apt-get install -y openjdk-11-jdk
           wget https://github.com/SonarSource/sonar-scanner-cli/releases/download/4.6.2.2472/sonar-scanner-cli-4.6.2.2472-linux.zip
           unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-          export PATH=$PATH:$PWD/sonar-scanner-4.6.2.2472-linux/bin4
+          export PATH=$PATH:$PWD/sonar-scanner-4.6.2.2472-linux/bin
           
-    - name: Run SonarScanner
+      - name: Run SonarScanner
         run: |
           sonar-scanner \
             -Dsonar.projectKey=car_website \
@@ -25,7 +25,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
 
   deploy:
     needs: build
