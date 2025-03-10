@@ -17,8 +17,9 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Install dependencies
+        run:  npm install
+
 
       - name: Lint Code
         run: npm run lint || echo "Linting failed, check code"
