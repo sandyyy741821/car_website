@@ -17,21 +17,22 @@ jobs:
         run: |
           # Install dependencies for SonarScanner
           sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk
-          java -version  # Verify Java version
-
-          # Download and unzip SonarScanner CLI
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-          unzip sonar-scanner-cli-4.6.2.2472-linux.zip
+          sudo apt-get install -y openjdk-11-jdk unzip wget
           
-          # Add SonarScanner to PATH
-          export PATH=$PATH:$PWD/sonar-scanner-4.6.2.2472-linux/bin
+          # Verify Java version
+          java -version
+          
+          # Download and unzip SonarScanner
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux.zip
+          unzip sonar-scanner-cli-7.0.2.4839-linux.zip
 
-          # Verify that sonar-scanner is installed correctly
-          sonar-scanner --version
+          # Add SonarScanner to PATH
+          export PATH=$PATH:$PWD/sonar-scanner-7.0.2.4839-linux/bin
+          echo "PATH=$PATH"  # Output the PATH for debugging purposes
           
       - name: Run SonarScanner
         run: |
+          # Run sonar-scanner to analyze the code
           sonar-scanner \
             -Dsonar.projectKey=car_website \
             -Dsonar.sources=. \
