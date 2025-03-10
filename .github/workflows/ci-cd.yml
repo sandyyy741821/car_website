@@ -26,7 +26,7 @@ jobs:
 
       - name: Run SonarScanner
         run: |
-          sonar-scanner -X \
+          sonar-scanner \
             -Dsonar.projectKey=car_website \
             -Dsonar.sources=. \
             -Dsonar.host.url=$SONAR_HOST_URL \
