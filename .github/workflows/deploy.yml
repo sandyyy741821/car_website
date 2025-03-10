@@ -1,0 +1,45 @@
+name: Cars Website CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Runs the pipeline on push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install  # Install project dependencies
+
+      - name: Run Linter
+        run: npm run lint  # Check for syntax issues
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: "https://sonarcloud.io"
+
+      - name: Build Website
+        run: npm run build  # Generate production files
+
+      - name: Deploy to EC2
+        env:
+          AWS_REGION: eu-north-1
+          EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > aws-ec2-key.pem
+          chmod 600 aws-ec2-key.pem
+          scp -o StrictHostKeyChecking=no -r ./build/ ec2-user@$EC2_INSTANCE_IP:/var/www/html/
+          ssh -o StrictHostKeyChecking=no -i aws-ec2-key.pem ec2-user@$EC2_INSTANCE_IP "sudo systemctl restart nginx"
