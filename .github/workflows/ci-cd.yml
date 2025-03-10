@@ -1,3 +1,10 @@
+name: SonarQube and Deploy Workflow
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the main branch
+
 jobs:
   sonar_scan:
     runs-on: ubuntu-latest
