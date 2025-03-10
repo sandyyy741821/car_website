@@ -1,0 +1,245 @@
+.page1 {
+  min-height: 100vh;
+  background-image: url("../images/pexels-mikebirdy-1335077.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: change 15s infinite ease-in-out;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1025px;
+  flex-wrap: wrap;
+  background-color: rgba(37, 61, 35, 0.7);
+  backdrop-filter: blur(50px);
+  display: flex;
+  justify-content: space-between;
+  padding: 1.3rem 10%;
+  align-items: center;
+}
+
+.Logo {
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  margin-left: -100px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+  border: 5px solid black;
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  border-radius: 10px;
+  width: 250px;
+}
+
+.search-box i {
+  font-size: 20px;
+  color: white;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.navi a {
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+  padding: 20px;
+}
+
+.icons {
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  right: 5%;
+  position: absolute;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  display: inline-block;
+  position: relative;
+}
+
+ul li a {
+  display: block;
+  padding: 20px 25px;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+}
+
+ul li:hover a {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+ul li ul.dropdown-list {
+  width: 200px;
+  background: rgba(37, 61, 35, 0.9);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  display: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+ul li:hover ul.dropdown-list {
+  display: block;
+}
+
+ul li ul.dropdown-list li {
+  display: block;
+}
+
+ul li ul.dropdown-list li a {
+  padding: 15px;
+  text-align: left;
+  font-size: 18px;
+  background: transparent;
+  color: white;
+}
+
+ul li ul.dropdown-list li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+.page2 {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(86, 85, 85);
+  position: relative;
+}
+
+.flag-container {
+  position: relative;
+  margin-top: 150px;
+  justify-content: center;
+  overflow-x: scroll; 
+  width: 100%;
+  white-space: nowrap;
+  display:block;
+}
+
+.flag-container::-webkit-scrollbar {
+  display: none; 
+}
+
+.flag-container {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+
+.flag-element {
+  display: inline-block;
+  width: 200px;
+  height: 100px;
+  margin-right: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  animation: scrollFlags 10s linear infinite;
+}
+
+.heading {
+  font-size: 30px;
+  text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: white;
+}
+
+.brand-container {
+  display: flex;
+  flex-wrap: wrap;
+  cursor:pointer;
+  justify-content: center;
+  overflow-y: scroll; 
+  max-height: 500px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.brand-container::-webkit-scrollbar {
+  display: none;
+}
+
+.brand-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+}
+
+.brand-element {
+  width: 200px;
+  height: 200px;
+  margin: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-name {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+@keyframes scrollFlags {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes change {
+  5.8% {
+    background-image: url("../images/pexels-ahmad-syahrir-107128-761815.jpg");
+  }
+  18.6% {
+    background-image: url("../images/pexels-mikebirdy-241316.jpg");
+  }
+  33.3% {
+    background-image: url("../images/pexels-mikebirdy-244206.jpg");
+  }
+  50% {
+    background-image: url("../images/pexels-pixabay-94272.jpg");
+  }
+  66.6% {
+    background-image: url("../images/pexels-pixabay-210143.jpg");
+  }
+  83.3% {
+    background-image: url("../images/pexels-sevenstormphotography-575386.jpg");
+  }
+  100% {
+    background-image: url("../images/pexels-mikebirdy-1335077.jpg");
+  }
+}

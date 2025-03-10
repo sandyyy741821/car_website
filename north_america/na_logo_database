@@ -1,0 +1,51 @@
+import pymysql
+import csv
+
+# Connect to MySQL database using PyMySQL
+mydb = pymysql.connect(
+  host="localhost",
+  user="root",
+  password="12345678",  # Change this to your MySQL password
+)
+
+cur = mydb.cursor()
+
+# Create the database if it doesn't exist
+cur.execute("CREATE DATABASE IF NOT EXISTS north_america")
+cur.execute("USE north_america")
+
+# Create the table (adjust according to your CSV columns)
+cur.execute("""
+CREATE TABLE IF NOT EXISTS logo (
+    name VARCHAR(255),
+    logo_url VARCHAR(255)
+);
+""")
+
+def insert_csv_to_db(csv_filename):
+    with open(csv_filename, newline='', encoding='utf-8') as csvfile:
+        csvread = csv.reader(csvfile)
+        next(csvread)  # Skip header row if present
+        
+        # Check if the CSV has data
+        rows = list(csvread)
+        if not rows:
+            print("CSV file is empty or only contains headers.")
+            return
+
+        for row in rows:
+            name = row[0]  
+            logo_url = row[1] 
+            
+            cur.execute("INSERT INTO logo (name, logo_url) VALUES (%s, %s)", (name, logo_url))
+        
+        mydb.commit()
+        print(f"{len(rows)} rows inserted into the logo table.")
+
+insert_csv_to_db('na_logos.csv') 
+
+cur.execute("SELECT * FROM logo")
+for row in cur.fetchall():
+    print(row)
+
+mydb.close()

@@ -1,0 +1,68 @@
+import pymysql
+import csv
+import os
+
+mydb = pymysql.connect(
+  host="localhost",
+  user="root",
+  password="12345678",  
+)
+
+cur = mydb.cursor()
+
+cur.execute("CREATE DATABASE IF NOT EXISTS south_america")
+cur.execute("USE south_america")
+
+cur.execute("""
+CREATE TABLE IF NOT EXISTS sa_data (
+    file_name VARCHAR(255),
+    model_name VARCHAR(255),
+    image_url VARCHAR(255)
+);
+""")
+
+def insert_csv_to_db_from_directory(directory_path):
+    csv_files = [f for f in os.listdir(directory_path) if f.endswith('.csv')]
+
+    for csv_file in csv_files:
+        file_path = os.path.join(directory_path, csv_file)
+        
+        file_name_without_extension = os.path.splitext(csv_file)[0]
+
+        try:
+            with open(file_path, newline='', encoding='utf-8') as csvfile:  
+                csvreader = csv.reader(csvfile)
+                next(csvreader) 
+                rows = list(csvreader) 
+        except UnicodeDecodeError:
+            with open(file_path, newline='', encoding='utf-8-sig') as csvfile:
+                csvreader = csv.reader(csvfile)
+                next(csvreader)  
+                rows = list(csvreader)
+        except Exception as e:
+            print(f"Error opening file {csv_file}: {e}")
+            continue
+        
+        if not rows:
+            print(f"CSV file '{csv_file}' is empty or only contains headers.")
+            continue
+
+        for row in rows:
+            model_name = row[0] if len(row) > 0 else None
+            image_url = row[1] if len(row) > 1 else None
+            
+            cur.execute("""
+            INSERT INTO sa_data (file_name, model_name, image_url)
+            VALUES (%s, %s, %s)
+            """, (file_name_without_extension, model_name, image_url))
+
+        mydb.commit()
+        print(f"{len(rows)} rows inserted from file '{csv_file}' into the sa_data table.")
+
+insert_csv_to_db_from_directory('sa_brands')  
+
+cur.execute("SELECT * FROM sa_data")
+for row in cur.fetchall():
+    print(row)
+
+mydb.close()

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <title>Brand Details</title>
+</head>
+<body>
+  <header class="header">
+    <a href="#" class="Logo">Car Details</a>
+    <nav class="navi">
+      <ul>
+        <li><a href="north_america.html">Back to Brands</a></li>
+      </ul>
+    </nav>
+  </header>
+  <section>
+    <div class="brand-details-container">
+      <h1 id="brand-title"></h1>
+      <div id="brand-details"></div>
+    </div>
+  </section>
+
+  <script>
+    // Parse the brand name from the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const brandName = urlParams.get('name');
+
+    // Display the brand name in the page title
+    document.getElementById('brand-title').textContent = `Details for ${brandName}`;
+
+    // Fetch the brand details using the brand name
+    fetch(`http://localhost:5001/api/north_america/details?name=${encodeURIComponent(brandName)}`)
+      .then(response => response.json())
+      .then(data => {
+        const detailsContainer = document.getElementById('brand-details');
+        detailsContainer.innerHTML = `
+          <p><strong>Name:</strong> ${data.name}</p>
+          <p><strong>Seating Capacity:</strong> ${data.seating_capacity}</p>
+          <p><strong>Mileage:</strong> ${data.mileage}</p>
+          <img src="${data.image_url}" alt="${data.name}" style="max-width: 100%; height: auto;">
+        `;
+      })
+      .catch(error => console.log('Error fetching brand details:', error));
+  </script>
+</body>
+</html>

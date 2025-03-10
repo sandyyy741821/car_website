@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <title>Document</title>
+</head>
+<body class="page2">
+  <header class="header">
+    <a href="#" class="Logo">Car Details</a>
+    <label for="" class="icons" id="menu-icon">
+        <i class='bx bx-menu'></i>
+    </label>
+    <div class="search-box">
+        <input type="search" placeholder="Search brand, model or continent name">
+        <i class='bx bx-search'></i>
+    </div>
+    <nav class="navi" id="nav-bar">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li class="dropdown">
+                <a href="#">Countries <i class='bx bx-chevron-down'></i></a>
+                <ul class="dropdown-list">
+                    <li><a href="north_america.html">North America</a></li>
+                    <li><a href="south_america.html">South America</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Popular Brands!!</a></li>
+            <li><a href="#">Login/Sign Up</a></li>
+        </ul>
+    </nav>
+  </header>
+  <section>
+    <div class="flag-container">
+    </div>
+    <hr><hr>
+    <div class="box"></div>
+    <div class="heading">
+      Car Manufacturers in North America!!
+    </div>
+    <div class="brand-container">
+    </div>
+    
+    <script>
+      fetch('http://localhost:5001/api/north_america/logo')
+        .then(response => response.json())
+        .then(data => {
+          const brandContainer = document.querySelector('.brand-container');
+          data.forEach(brand => {
+            const brandElement = document.createElement('div');
+            brandElement.classList.add('brand-element');
+    
+            brandElement.innerHTML = `
+              <img src="${brand.logo_url}" alt="${brand.name}" class="brand-logo">
+              <p class="brand-name">${brand.name}</p>
+            `;
+    
+            brandContainer.appendChild(brandElement);
+          });
+        })
+        .catch(error => console.log('Error fetching brands:', error));
+    </script>    
+    <script>
+      $.ajax({
+        url: 'http://localhost:5001/api/north_america/flag', 
+        method: 'GET',
+        success: function(data) {
+          var flagContainer = $(".flag-container");
+          data.forEach(function(item) {
+            var flagElement = $("<div class='flag-element'>");
+            flagElement.css("background-image", "url('" + item.flag_url + "')");
+            flagContainer.append(flagElement);
+          });
+        },
+        error: function(error) {
+          console.log('Error fetching flags:', error);
+        }
+      });
+    </script>  
+  </section>
+</body>
+</html>
