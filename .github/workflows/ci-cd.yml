@@ -1,39 +1,30 @@
-name: CI/CD Pipeline for Static Website
-
-on:
-  push:
-    branches: [main]
-
 jobs:
-  build:
+  sonar_scan:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+      - name: Install SonarScanner
+        run: |
+          # Install dependencies for SonarScanner
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk
+          wget https://github.com/SonarSource/sonar-scanner-cli/releases/download/4.6.2.2472/sonar-scanner-cli-4.6.2.2472-linux.zip
+          unzip sonar-scanner-cli-4.6.2.2472-linux.zip
+          export PATH=$PATH:$PWD/sonar-scanner-4.6.2.2472-linux/bin
 
-      - name: Install dependencies
-        run:  npm install
-
-
-      - name: Lint Code
-        run: npm run lint || echo "Linting failed, check code"
-
-      - name: Run SonarQube Scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - name: Run SonarScanner
         run: |
           sonar-scanner \
             -Dsonar.projectKey=car_project \
             -Dsonar.sources=. \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.host.url=$SONAR_HOST_URL \
+            -Dsonar.login=$SONAR_TOKEN
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
   deploy:
     needs: build
